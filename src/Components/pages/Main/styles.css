@@ -1,0 +1,35 @@
+.list-biography {
+    max-width: 700px;
+    margin: 20px auto 0;
+}
+
+.list-biography article {
+    background: #fff;
+    border: 2px solid #DDD;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.biography-description {
+    font-size:16px;
+    color: #928A92;
+    margin-top:10px;
+    line-height:24px;
+}
+
+.read-more{
+    /* height:30px; */
+    border-radius: 5px;
+    border: 2px solid #381C38;
+    margin-top:20px;
+    color:white;
+    background-color: #381C38;
+    text-decoration: none;
+    font-family: Arial, Helvetica, sans-serif;
+    padding: 5px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+}
