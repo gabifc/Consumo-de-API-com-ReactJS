@@ -5,57 +5,80 @@ import './styles.css'
 
 class Main extends Component {
     //chamando a api
-    state= {
+    state = {
         // aqui colocar o valor do que quero popular
-        biographies:[]
+        biographies: [],
+        biographyInfo: {},
+        page: 1
     }
     // ele era populado depois que component for criado
-    componentDidMount(){
+    componentDidMount() {
         // monta/carrega as bio
         this.loadBiographies();
     }
-// fazendo promessa 
-loadBiographies = async () => {
-    //resposta da api
-    // veja a api, verifica meu metodo e retorna 
-    const response = await api.get(`/biographies`)
-    //console.log("resposta da api", response)
-    const { docs } = response.data
-    //console.log("Docs que foi retornada da api", docs )
+    // fazendo promessa 
+    loadBiographies = async (page = 1) => {
+        //resposta da api
+        // veja a api, verifica meu metodo e retorna 
+        const response = await api.get(`/biographies?page=${page}`)
+        //console.log("resposta da api", response)
+        const { docs, ...biographyInfo } = response.data;
+        //console.log("Docs que foi retornada da api", docs )
+        this.setState({ biographies: docs, biographyInfo, page })
+    }
 
-    this.setState({ biographies: docs })
+    prevPage = () => {
+        const { page, biographyInfo } = this.state;
 
-}
+        if (page === 1) return;
 
+        const pageNumber = page - 1;
 
-// criando a estrutura da pagina
+        this.loadBiographies(pageNumber);
+    }
+
+    // função da página 2 acionada pelos botões
+    // mudo o estado da pagina 2. Populo para pagi 1 e dpeois para a pagina 2
+    // add pag 1 na class man e repasso como segunda chamada na chave
+    nextPage = () => {
+        const { page, biographyInfo } = this.state;
+
+        if (page === biographyInfo.pages) return;
+
+        const pageNumber = page + 1;
+
+        this.loadBiographies(pageNumber);
+    }
+
+    // criando a estrutura da pagina
     render() {
-    // DEPOIS DE CRIAR O STATE
-    // posso colocar, e chamar mais coisas
-    const { biographies } = this.state;
-        console.log("o que vem do state", biographies)
+        // DEPOIS DE CRIAR O STATE
+        // posso colocar, e chamar mais coisas
+        const { biographies, page, biographyInfo } = this.state;
+        //console.log("o que vem do state", biographies)
 
         return (
             <div className="list-biography">
                 {biographies.map(biography => (
-                <article key={biography._id}>
-                    <strong> {biography.nome}</strong>
-                    <p className="biography-description">{biography.description}</p>
-                    <Link className="read-more" to={`/biographies/${biography._id}`}>Acessar</Link>
-                </article>
-
+                    <article key={biography._id}>
+                        <strong>{biography.nome}</strong>
+                        <p className="biography-description">{biography.description}</p>
+                        <Link className="read-more" to={`/biographies/${biography._id}`} >Acessar</Link>
+                    </article>
                 ))}
-                
+
+
+                <div className="actions">
+                    <button disabled={page === 1} onClick={this.prevPage}>
+                        Anterior
+          </button>
+                    <button disabled={page === biographyInfo.pages} onClick={this.nextPage}>Próximo</button>
+                </div>
             </div>
         )
     }
-
 }
 
-                    
-
 export default Main
-/*
-<p className="decription-biography">Descrição</p>
-                    <a href="" className="read-more>">Leia mais</a>
-                    */
+
+
