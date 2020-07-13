@@ -42,11 +42,11 @@ class Main extends Component {
     // add pag 1 na class man e repasso como segunda chamada na chave
     nextPage = () => {
         const { page, biographyInfo } = this.state;
-
+        console.log("PAGE DO THIS STATE: ", page)
         if (page === biographyInfo.pages) return;
 
         const pageNumber = page + 1;
-
+        console.log("PAGE NUMBER: ", pageNumber)
         this.loadBiographies(pageNumber);
     }
 
@@ -56,7 +56,7 @@ class Main extends Component {
         // posso colocar, e chamar mais coisas
         const { biographies, page, biographyInfo } = this.state;
         //console.log("o que vem do state", biographies)
-
+        console.log("Page do Render: ", page)
         return (
             <div className="list-biography">
                 {biographies.map(biography => (
@@ -69,10 +69,10 @@ class Main extends Component {
 
 
                 <div className="actions">
-                    <button disabled={page === 1} onClick={this.prevPage}>
+                    <button className="btnPag" disabled={page === 1} onClick={this.prevPage}>
                         Anterior
           </button>
-                    <button disabled={page === biographyInfo.pages} onClick={this.nextPage}>Próximo</button>
+                    <button className="btnPag" disabled={page === biographyInfo.pages} onClick={this.nextPage}>Próximo</button>
                 </div>
             </div>
         )
